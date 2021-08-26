@@ -20,7 +20,7 @@ import {
 
 export const RestaurantInfoCard = ({ restaurant = {} }) => {
   const {
-    name = "1944 Havemore",
+    name = "1944 Havmore",
     icon = "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
     photos = [
       // "https://picsum.photos/700",
@@ -30,9 +30,11 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
     isOpenNow = true,
     rating = 4,
     isClosedTemporarily = true,
+    placeId,
   } = restaurant;
 
-  const ratingArray = Array.from(new Array(Math.floor(rating)));
+  // const ratingArray = Array.from(new Array(Math.floor(rating)));
+  const ratingArray = Array.from(Array(Math.floor(rating)).keys());
 
   return (
     <RestaurantCard elevation={5}>
@@ -41,8 +43,13 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
         <Text variant="label">{name}</Text>
         <Section>
           <Rating>
-            {ratingArray.map(() => (
-              <SvgXml xml={star} width={20} height={20} />
+            {ratingArray.map((_, i) => (
+              <SvgXml
+                key={`start-${placeId}-${i}`}
+                xml={star}
+                width={20}
+                height={20}
+              />
             ))}
           </Rating>
           <SectionEnd>
