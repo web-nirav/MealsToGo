@@ -1,10 +1,6 @@
 import React from "react";
-
-import { Text } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-import { ThemeProvider } from "styled-components";
+import { StatusBar as ExpoStatusBar } from "expo-status-bar";
+import { ThemeProvider } from "styled-components/native";
 
 import {
   useFonts as useOswald,
@@ -12,16 +8,12 @@ import {
 } from "@expo-google-fonts/oswald";
 import { useFonts as useLato, Lato_400Regular } from "@expo-google-fonts/lato";
 
-import { StatusBar as ExpoStatusBar } from "expo-status-bar";
-import { Ionicons } from "@expo/vector-icons";
-
-import { RestaurantsScreen } from "./src/features/restaurants/screens/restaurants-screen";
 import { theme } from "./src/infrastructure/theme";
-import { SafeArea } from "./src/components/utility/safe-area.component";
-import { RestaurantContextProvider } from "./src/services/restaurants/restaurants.context";
-import { LocationConextProvider } from "./src/services/location/location.context";
+import { Navigation } from "./src/infrastructure/navigation";
 
-// import { restaurantsRequest } from "./src/services/restaurants/restaurants.service";
+import { LocationConextProvider } from "./src/services/location/location.context";
+import { FavouritesContextProvider } from "./src/services/favourites/favourites.context";
+import { RestaurantContextProvider } from "./src/services/restaurants/restaurants.context";
 
 export default function App() {
   const [oswaldLoaded] = useOswald({
@@ -36,52 +28,16 @@ export default function App() {
     return null;
   }
 
-  const TAB_ICONS = {
-    Restaurants: "md-restaurant",
-    Map: "md-map",
-    Settings: "md-settings",
-  };
-
-  const MapScreen = () => (
-    <SafeArea>
-      <Text>Map Screen!</Text>
-    </SafeArea>
-  );
-
-  const SettingsScreen = () => (
-    <SafeArea>
-      <Text>Settings Screen!</Text>
-    </SafeArea>
-  );
-
-  const Tab = createBottomTabNavigator();
-
-  const createScreenOptions = ({ route }) => {
-    const iconName = TAB_ICONS[route.name];
-    return {
-      tabBarIcon: ({ color, size }) => {
-        // You can return any component that you like here!
-        return <Ionicons name={iconName} size={size} color={color} />;
-      },
-      tabBarActiveTintColor: "tomato",
-      tabBarInactiveTintColor: "gray",
-    };
-  };
-
   return (
     <>
       <ThemeProvider theme={theme}>
-        <LocationConextProvider>
-          <RestaurantContextProvider>
-            <NavigationContainer>
-              <Tab.Navigator screenOptions={createScreenOptions}>
-                <Tab.Screen name="Restaurants" component={RestaurantsScreen} />
-                <Tab.Screen name="Map" component={MapScreen} />
-                <Tab.Screen name="Settings" component={SettingsScreen} />
-              </Tab.Navigator>
-            </NavigationContainer>
-          </RestaurantContextProvider>
-        </LocationConextProvider>
+        <FavouritesContextProvider>
+          <LocationConextProvider>
+            <RestaurantContextProvider>
+              <Navigation />
+            </RestaurantContextProvider>
+          </LocationConextProvider>
+        </FavouritesContextProvider>
       </ThemeProvider>
       <ExpoStatusBar style="auto" />
     </>
