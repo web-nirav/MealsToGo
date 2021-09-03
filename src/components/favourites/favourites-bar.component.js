@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 import { Spacer } from "../spacer/spacer.component";
 import { Text } from "../typography/text.component";
 import { CompactRestaurantInfo } from "../restaurant/compact-restaurant-info.component";
+import { FadeInView } from "../animations/fade.animation";
 
 const FavouritesWrapper = styled.View`
   padding: 10px;
@@ -26,7 +27,9 @@ export const FavouriteBar = ({ favourites, onNavigate }) => {
               <TouchableOpacity
                 onPress={() => onNavigate("RestaurantDetail", { restaurant })}
               >
-                <CompactRestaurantInfo restaurant={restaurant} />
+                <FadeInView>
+                  <CompactRestaurantInfo restaurant={restaurant} />
+                </FadeInView>
               </TouchableOpacity>
             </Spacer>
           );
